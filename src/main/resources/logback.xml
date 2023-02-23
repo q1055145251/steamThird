@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false" scan="true" scanPeriod="1 seconds">
+
+    <contextName>logback</contextName>
+    <!--                                          定义变量 start                                    -->
+    <property name="path" value="./"/>
+    <!--    所有日志-->
+    <property name="log.path" value="${path}/logAll/logback.log"/>
+    <!--    正常info所有日志-->
+    <property name="logInfo.path" value="${path}/logInfo/logInfo.log"/>
+    <!--    正常debug所有日志-->
+    <property name="logDebug.path" value="${path}/logDebug/logDebug.log"/>
+    <!--    数据库日志-->
+    <property name="logMapper.path" value="${path}/logMapper/logMapper.log"/>
+    <!--    慢sql日志-->
+    <property name="slowSql.path" value="${path}/logMapper/slowSql.log"/>
+
+
+    <!--                                                        输出方式start                                   -->
+    <!-- name指定<appender>的名称
+     class指定<appender>的全限定名 -->
+    <!-- 控制台输出 appender -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!-- <encoder>表示输出格式 -->
+            <pattern>%date 【%X{traceId},%X{spanId},%X{parentId}】 %highlight(%level) [%thread] %cyan(%logger{36}) [%file : %line] %msg%n</pattern>
+            <!-- 控制台也要使用UTF-8，不要使用GBK，否则会中文乱码 -->
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+
+
+
+
+    <!--    所有日志-->
+    <appender name="file"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--        文件路径-->
+        <file>${log.path}</file>
+        <!-- 是否追加写入 默认true-->
+        <append>false</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.path}.%d{yyyy-MM-dd}.zip</fileNamePattern>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%date 【%X{traceId},%X{spanId},%X{parentId}】 %level [%thread] %logger{36} [%file : %line] %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!--    正常info的所有日志-->
+    <appender name="logInfo"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!--过滤 INFO-->
+            <level>INFO</level>
+            <!--匹配到就禁止-->
+            <onMatch>ACCEPT</onMatch>
+            <!--没有匹配到就允许-->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>${logInfo.path}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logInfo.path}.%d{yyyy-MM-dd}.zip</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date 【%X{traceId},%X{spanId},%X{parentId}】 %level [%thread] %logger{36} [%file : %line] %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!--    正常debug的所有日志-->
+    <appender name="logDebug"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logDebug.path}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logDebug.path}.%d{yyyy-MM-dd}.zip</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date 【%X{traceId},%X{spanId},%X{parentId}】 %level [%thread] %logger{36} [%file : %line] %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!--                                    日志记录方式start                                     -->
+
+    <!--    数据库日志-->
+    <appender name="logMapper"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logMapper.path}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logMapper.path}.%d{yyyy-MM-dd}.zip</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date 【%X{traceId},%X{spanId},%X{parentId}】 %level [%thread] %logger{36} [%file : %line] %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="slowSql"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${slowSql.path}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${slowSql.path}.%d{yyyy-MM-dd}.zip</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date 【%X{traceId},%X{spanId},%X{parentId}】 %level %green([%thread]) %logger{36} [%file : %line] %msg%n
+            </pattern>
+        </encoder>
+<!--        追加记录-->
+        <append>true</append>
+
+        <!-- 此日志文件只记录级别的 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="file"/>
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+    <logger name="com.example.logback" level="warn"/>
+
+    <!--    只记录正常Info日志  additivity是否继承父级日志-->
+    <logger name="com.laituo.schoolStu" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="logInfo"/>
+    </logger>
+
+    <!--    正常Debug日志-->
+    <logger name="com.laituo.schoolStu" level="Debug" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="logDebug"/>
+    </logger>
+
+    <!--    数据库日志-->
+    <logger name="com.laituo.schoolStu.mapper" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="logMapper"/>
+    </logger>
+
+    <!--    慢sql日志-->
+    <logger name="com.alibaba.druid.filter.stat.StatFilter" level="ERROR" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="slowSql"/>
+    </logger>
+    <!--                                    日志记录方式end                                    -->
+
+</configuration>

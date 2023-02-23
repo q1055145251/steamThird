@@ -1,0 +1,51 @@
+# springdoc-openapi项目配置
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: '默认'
+      paths-to-match: '/**'
+      packages-to-scan: com.ocean.turntableGame.controller
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+
+
+# 开启Gzip压缩，默认只压缩超过2048字节的数据
+server:
+  compression:
+    enabled: true
+    mime-types: application/json
+#============================================================================
+# mybatis plus setting
+#============================================================================
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-field: flag # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)
+      logic-delete-value: "null" # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+app:
+  version: @project.version@
+  build:
+    time: @timestamp@
+
+spring:
+  profiles:
+    active: @activatedProperties@
+    include: app,system
+  zipkin:
+    base-url: http://localhost:9411/    # zipkin 服务器的地址
+    discovery-client-enabled: false # 关闭服务发现，否则 Spring Cloud 会把 zipkin 的 url 当做服务名称
+    sender:
+      type: web # 设置使用 http 的方式传输数据
+  sleuth:
+    sampler:
+      probability: 1  # 设置抽样采集率为 100% ，默认为 0.1 ，即 10%
+  application:
+    name: service8080

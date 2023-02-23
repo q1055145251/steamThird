@@ -1,0 +1,12 @@
+#项目设置相关
+config:
+  #ERROR处理相关
+  debug: false   #是否打印debug内容
+
+spring:
+  #最大文件上传配置
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1024MB
+      location: /
