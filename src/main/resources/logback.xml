@@ -3,7 +3,7 @@
 
     <contextName>logback</contextName>
     <!--                                          定义变量 start                                    -->
-    <property name="path" value="./"/>
+    <property name="path" value="./log"/>
     <!--    所有日志-->
     <property name="log.path" value="${path}/logAll/logback.log"/>
     <!--    正常info所有日志-->
@@ -134,7 +134,7 @@
     </logger>
 
     <!--    正常Debug日志-->
-    <logger name="com.laituo.schoolStu" level="Debug" additivity="false">
+    <logger name="com.laituo.schoolStu" level="DEBUG" additivity="false">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="logDebug"/>
     </logger>

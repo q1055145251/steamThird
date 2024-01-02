@@ -1,5 +1,6 @@
 package com.example.springboot3demo.exceptionhandler;
 
+import com.example.springboot3demo.common.enumType.ErrorCode;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -11,6 +12,17 @@ public class MessageException extends RuntimeException {
 
     public MessageException(String msg) {
         super(msg);
+        this.msg = msg;
+    }
+
+    public MessageException(ErrorCode errorCode) {
+        super(errorCode.getMsg());
+        this.code = errorCode.getCode();
+        this.msg = errorCode.getMsg();
+    }
+    public MessageException(ErrorCode errorCode, String msg) {
+        super(msg);
+        this.code = errorCode.getCode();
         this.msg = msg;
     }
 

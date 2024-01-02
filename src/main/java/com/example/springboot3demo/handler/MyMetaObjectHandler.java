@@ -10,17 +10,24 @@ import java.util.Date;
 public class MyMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
-        Date date=new Date();
-        metaObject.setValue("createdDate",date);
-        metaObject.setValue("updateDate",date);
-        metaObject.setValue("updateTimestamp",(date.getTime()));
-        metaObject.setValue("createdTimestamp",(date.getTime()));
+        Date date = new Date();
+        try {
+            metaObject.setValue("createdDate", date);
+            metaObject.setValue("updateDate", date);
+            metaObject.setValue("updateTimestamp", (date.getTime()));
+            metaObject.setValue("createdTimestamp", (date.getTime()));
+        } catch (Exception ignored) {
+        }
+
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        Date date=new Date();
-        metaObject.setValue("updateDate",date);
-        metaObject.setValue("updateTimestamp",(date.getTime()));
+        Date date = new Date();
+        try {
+            metaObject.setValue("updateDate", date);
+            metaObject.setValue("updateTimestamp", (date.getTime()));
+        } catch (Exception ignored) {
+        }
     }
 }
