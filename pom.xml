@@ -9,13 +9,14 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>springboot3Demo</artifactId>
+    <artifactId>steamThird</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>springboot3Demo</name>
-    <description>springboot3Demo</description>
+    <name>steamThird</name>
+    <description>steamThird</description>
     <properties>
         <java.version>19</java.version>
         <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
+        <feign-version>4.0.1</feign-version>
     </properties>
     <dependencies>
         <dependency>
@@ -172,6 +173,26 @@
             <version>3.19.0</version>
         </dependency>
 
+
+        <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.17.2</version>
+        </dependency>
+
+        <!--feign-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-context</artifactId>
+            <version>${feign-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>${feign-version}</version>
+        </dependency>
+
         <!--        redis-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -210,8 +231,10 @@
         </profile>
     </profiles>
 
+
+
     <build>
-        <finalName>DEMO</finalName>
+        <finalName>steam-third</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

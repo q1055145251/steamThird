@@ -18,6 +18,7 @@ knife4j:
 
 # 开启Gzip压缩，默认只压缩超过2048字节的数据
 server:
+  port: 8085
   compression:
     enabled: true
     mime-types: application/json
@@ -37,7 +38,7 @@ app:
 
 spring:
   profiles:
-    active: @activatedProperties@
+    active: local
     include: app,system
   zipkin:
     base-url: http://localhost:9411/    # zipkin 服务器的地址
