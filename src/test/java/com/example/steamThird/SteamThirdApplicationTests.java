@@ -20,7 +20,7 @@ class SteamThirdApplicationTests {
     @Test
     void contextLoads() throws IOException {
 
-//        steamUtils.getAppInfo(578080);
+        steamUtils.getAppInfo(10);
     }
 
 }

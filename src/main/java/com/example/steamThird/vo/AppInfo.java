@@ -13,6 +13,11 @@ public class AppInfo {
     private List<String> label;
 
     /**
+     * 简述
+     */
+    private String sketch;
+
+    /**
      * 视频url
      */
     private String videoUrl;

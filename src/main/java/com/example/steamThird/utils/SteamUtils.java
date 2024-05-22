@@ -32,6 +32,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
@@ -48,6 +49,8 @@ public class SteamUtils {
 
     @Resource(name = "asyncExecutor")
     private ThreadPoolTaskExecutor executor;
+
+    private static final String LG_ZH = "Steam_Language=schinese;";
 
     /**
      * 获取应用程序列表
@@ -78,7 +81,7 @@ public class SteamUtils {
 //        // 将字节数组转换为字符串（这里使用UTF-8编码，但你可能需要根据你的HTML文件的实际编码来调整）
 //        String html = new String(fileContent, StandardCharsets.UTF_8);
 
-        String html = steamApi.getAppId(id);
+        String html = steamApi.getAppId(LG_ZH, id);
 
         Document doc = Jsoup.parse(html);
         AppInfo appInfo = new AppInfo();
@@ -91,8 +94,12 @@ public class SteamUtils {
         List<String> label = labelElement.stream().map(Element::text).toList();
         appInfo.setLabel(label);
 
+        //获取游戏简述
+        String text = doc.select("div.game_description_snippet").text();
+        appInfo.setSketch(text);
+
         //获取发行时间
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d MMM, yyyy", java.util.Locale.ENGLISH);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy 年 MM 月 d 日");
         long issueTimestamp = LocalDate.parse(doc.select("div.date").text(), dtf).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
         appInfo.setIssueTimestamp(issueTimestamp);
         //获取视频
@@ -107,7 +114,7 @@ public class SteamUtils {
 
 
     public List<String> getAppSlideshow(Integer id) {
-        String html = steamApi.getAppId(id);
+        String html = steamApi.getAppId(LG_ZH, id);
         Document doc = Jsoup.parse(html);
         List<CompletableFuture<String>> futures = new ArrayList<>();
         //获取轮播图
