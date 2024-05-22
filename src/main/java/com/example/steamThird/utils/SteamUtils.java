@@ -26,6 +26,9 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -80,7 +83,6 @@ public class SteamUtils {
         Document doc = Jsoup.parse(html);
         AppInfo appInfo = new AppInfo();
 
-
         //下载首页图片
         CompletableFuture<String> future = downloadImageToBase64Async("https://cdn.cloudflare.steamstatic.com/steam/apps/" + id + "/header_292x136.jpg?t=1713454839");
 
@@ -89,6 +91,11 @@ public class SteamUtils {
         List<String> label = labelElement.stream().map(Element::text).toList();
         appInfo.setLabel(label);
 
+        //获取发行时间
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MMM, yyyy", java.util.Locale.ENGLISH);
+        long issueTimestamp = LocalDate.parse(doc.select("div.date").text(), dtf).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        appInfo.setIssueTimestamp(issueTimestamp
+        );
         //获取视频
         String video = doc.select("div.highlight_player_item.highlight_movie").attr("data-mp4-source");
         appInfo.setVideoUrl(video);

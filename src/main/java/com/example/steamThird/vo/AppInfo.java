@@ -22,4 +22,9 @@ public class AppInfo {
      */
     private String headerImg;
 
+    /**
+     * 发布时间戳
+     */
+    private Long issueTimestamp;
+
 }
