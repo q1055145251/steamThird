@@ -10,11 +10,10 @@ import org.springframework.context.annotation.Configuration;
  */
 @SuppressWarnings("unused")
 @Configuration
-@ConfigurationProperties(prefix = "config")
 public class ProjectConfig {
 
     //ERROR处理配置
-    private static Boolean debug;
+    private static Boolean debug=false;
 
     public static boolean isDebug() {
         return debug;

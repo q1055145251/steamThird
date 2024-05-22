@@ -92,10 +92,9 @@ public class SteamUtils {
         appInfo.setLabel(label);
 
         //获取发行时间
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MMM, yyyy", java.util.Locale.ENGLISH);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d MMM, yyyy", java.util.Locale.ENGLISH);
         long issueTimestamp = LocalDate.parse(doc.select("div.date").text(), dtf).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
-        appInfo.setIssueTimestamp(issueTimestamp
-        );
+        appInfo.setIssueTimestamp(issueTimestamp);
         //获取视频
         String video = doc.select("div.highlight_player_item.highlight_movie").attr("data-mp4-source");
         appInfo.setVideoUrl(video);
