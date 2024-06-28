@@ -4,7 +4,6 @@ package com.example.steamThird.common;
 import com.alibaba.fastjson2.JSON;
 import com.example.steamThird.common.enumType.ErrorCode;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -14,16 +13,12 @@ import java.io.IOException;
 @Data
 @Accessors(chain = true)//链式
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(description = "返回类")
 public class R<T> {
 
-    @Schema(description = "状态码")
     private Integer code = 200;
 
-    @Schema(description = "消息", nullable = true)
     private String message;
 
-    @Schema(description = "数据", nullable = true)
     private T data;
 
     public static R<String> ok() {

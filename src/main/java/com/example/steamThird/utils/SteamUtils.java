@@ -99,7 +99,7 @@ public class SteamUtils {
         appInfo.setSketch(text);
 
         //获取发行时间
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy 年 MM 月 d 日");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy 年 M 月 d 日");
         long issueTimestamp = LocalDate.parse(doc.select("div.date").text(), dtf).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
         appInfo.setIssueTimestamp(issueTimestamp);
         //获取视频
@@ -122,6 +122,7 @@ public class SteamUtils {
             String temp = item.attr("href");
             return URLDecoder.decode(temp.substring(temp.indexOf("u=") + 1), StandardCharsets.UTF_8);
         }).collect(Collectors.toList());
+        href = href.size() > 5 ? href.subList(0, 5) : href;
         href.forEach(item -> futures.add(downloadImageToBase64Async(item)));
         href.clear();
         //循环取出线程的地址

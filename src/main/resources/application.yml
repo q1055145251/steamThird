@@ -32,9 +32,9 @@ mybatis-plus:
       logic-delete-value: "null" # 逻辑已删除值(默认为 1)
       logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
 app:
-  version: @project.version@
+  version: 123
   build:
-    time: @timestamp@
+    time: 123
 
 spring:
   profiles:
