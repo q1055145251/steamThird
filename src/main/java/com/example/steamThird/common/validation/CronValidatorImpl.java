@@ -1,7 +1,7 @@
 package com.example.steamThird.common.validation;
 
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 import org.springframework.scheduling.support.CronExpression;
 
 @SuppressWarnings("unused")

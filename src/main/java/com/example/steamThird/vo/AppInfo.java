@@ -18,6 +18,11 @@ public class AppInfo {
     private String sketch;
 
     /**
+     * 配置要求
+     */
+    private String config;
+
+    /**
      * 视频url
      */
     private String videoUrl;

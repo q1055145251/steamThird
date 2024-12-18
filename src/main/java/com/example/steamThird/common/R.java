@@ -4,10 +4,10 @@ package com.example.steamThird.common;
 import com.alibaba.fastjson2.JSON;
 import com.example.steamThird.common.enumType.ErrorCode;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Data

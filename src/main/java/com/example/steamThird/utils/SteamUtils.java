@@ -7,7 +7,9 @@ import com.example.steamThird.common.api.ApiSteamApi;
 import com.example.steamThird.common.api.SteamApi;
 import com.example.steamThird.vo.App;
 import com.example.steamThird.vo.AppInfo;
-import jakarta.annotation.Resource;
+
+import javax.annotation.Resource;
+
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -20,9 +22,7 @@ import org.springframework.stereotype.Component;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLDecoder;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -50,7 +50,10 @@ public class SteamUtils {
     @Resource(name = "asyncExecutor")
     private ThreadPoolTaskExecutor executor;
 
-    private static final String LG_ZH = "Steam_Language=schinese;";
+    /**
+     * cookie 设置中文以及生日时间
+     */
+    private static final String COOKIE = "Steam_Language=schinese;birthtime=-1861948799;";
 
     /**
      * 获取应用程序列表
@@ -70,24 +73,22 @@ public class SteamUtils {
      * @return {@link JSONObject}
      * @throws IOException IOException
      */
-    public AppInfo getAppInfo(Integer id) throws IOException {
+    public AppInfo getAppInfo(Integer id) throws IOException, URISyntaxException {
 
-//        // 假设你的HTML文件位于项目的根目录下，名为"example.html"
-//        String filePath = "C:/Users/Administrator/Desktop/2.html"; // 你需要根据你的文件位置修改这个路径
-//
-//        // 使用Java NIO的Files和Paths类来读取文件
-//        byte[] fileContent = Files.readAllBytes(Paths.get(filePath));
-//
-//        // 将字节数组转换为字符串（这里使用UTF-8编码，但你可能需要根据你的HTML文件的实际编码来调整）
-//        String html = new String(fileContent, StandardCharsets.UTF_8);
-
-        String html = steamApi.getAppId(LG_ZH, id);
-
+//        String html = steamApi.getTest(new URI("http://steam.yossqv2.top"), "game.html");
+//        String html = steamApi.getTest(new URI("http://steam.yossqv2.top"), "old_game.html");
+        String html = steamApi.getAppId(COOKIE, id);
         Document doc = Jsoup.parse(html);
         AppInfo appInfo = new AppInfo();
 
         //下载首页图片
         CompletableFuture<String> future = downloadImageToBase64Async("https://cdn.cloudflare.steamstatic.com/steam/apps/" + id + "/header_292x136.jpg?t=1713454839");
+
+        //获取游戏配置
+        Element configElement = doc.select("div.game_area_sys_req.sysreq_content.active").first();
+        if (configElement != null) {
+            appInfo.setConfig(configElement.toString());
+        }
 
         //获取标签
         Elements labelElement = doc.select("div#genresAndManufacturer").select("span").select("a");
@@ -114,7 +115,7 @@ public class SteamUtils {
 
 
     public List<String> getAppSlideshow(Integer id) {
-        String html = steamApi.getAppId(LG_ZH, id);
+        String html = steamApi.getAppId(COOKIE, id);
         Document doc = Jsoup.parse(html);
         List<CompletableFuture<String>> futures = new ArrayList<>();
         //获取轮播图

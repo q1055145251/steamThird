@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 
+import java.net.URI;
+
 /**
  * 第三方授权配置相关api
  *
@@ -17,4 +19,9 @@ public interface SteamApi {
 
     @GetMapping(value = "/app/{id}")
     String getAppId(@RequestHeader("Cookie") String cookie, @PathVariable("id") Integer id);
+
+    @GetMapping(value = "/{apiName}")
+    String getTest(URI uri, @PathVariable("apiName") String apiName);
+
+
 }

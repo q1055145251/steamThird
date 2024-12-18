@@ -4,8 +4,7 @@ package com.example.steamThird.common;
 import com.alibaba.fastjson2.JSON;
 import com.example.steamThird.common.enumType.ResultCode;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponse;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -74,11 +73,9 @@ public class RCode extends ResponseEntity<Object> {
 
 
     @Data
-    @Schema(description = "通用消息提示")
     public static class Message {
 
         @JsonInclude(value = JsonInclude.Include.NON_NULL)
-        @Schema(description = "消息")
         private Object message;
 
         //向前端返回的内容
